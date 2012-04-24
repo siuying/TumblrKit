@@ -170,9 +170,9 @@
                                                              error:&error];
 
     // Bail out quickly if NSURLConnection populated error.
-    if (error || [theURLResponse statusCode] == TKTumblrForbidden) {
-        if (delegate && [delegate respondsToSelector:@selector(tumblrDidAutheicateFailedWithError:)]) {
-            [delegate tumblrDidAutheicateFailedWithError:error];
+    if (error || [theURLResponse statusCode] >= 300) {
+        if (delegate && [delegate respondsToSelector:@selector(tumblrDidAutheicateFailedWithError:statusCode:)]) {
+            [delegate tumblrDidAutheicateFailedWithError:error statusCode:[theURLResponse statusCode]];
         }
         return NO;
     }
