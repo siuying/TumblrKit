@@ -226,7 +226,8 @@
     static NSDictionary *elementToSelectorDict = nil;
 
     if (!elementToSelectorDict) {
-        elementToSelectorDict = [NSDictionary dictionaryWithObjectsAndKeys:
+        
+        elementToSelectorDict = [[NSDictionary alloc] initWithObjectsAndKeys:
                                  @"appendToText:", @"text",
                                  @"appendToCaption:",@"caption",
                                  @"appendToPlayer:", @"player",
