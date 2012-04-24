@@ -42,6 +42,8 @@ typedef enum
 - (void)tumblrDidFailToUploadPost:(TKPost *)thePost withDomain:(NSString *)theDomain returnCode:(TKTumblrResponseReturnCode)theReturnCode;
 - (void)tumblrDidReceiveTumblelog:(TKTumblelog *)theTumblelog;
 
+- (void)tumblrDidAutheicateSuccess:(NSArray*)tumblelogs;
+- (void)tumblrDidAutheicateFailedWithError:(NSError *)theDomain;
 @end
 
 @interface TKTumblr : NSObject <NSXMLParserDelegate,TKTumblrDelegate>
@@ -64,6 +66,7 @@ typedef enum
 @property (nonatomic,retain) TKPost *currentPost;
 @property (nonatomic,retain) TKPost *requestedPost;
 @property (nonatomic,copy) NSString *currentElementName;
+@property (nonatomic,retain) NSMutableArray* tumblelogs;
 
 - (id)initWithEmail:(NSString *)theEmail andPassword:(NSString *)thePassword;
 - (BOOL)uploadPost:(TKPost *)thePost;
@@ -71,6 +74,6 @@ typedef enum
 - (void)postsWithReadRequest:(TKTumblrReadRequest *)theReadRequest;
 - (TKPost *)postWithID:(NSNumber *)thePostID andDomain:(NSString *)theDomain;
 - (NSDictionary *)attributesAsDictionary;
-- (NSArray *)tumblelogs;
+- (BOOL) authenticate;
 
 @end

@@ -27,7 +27,7 @@
 
 @implementation TKTumblr
 
-@synthesize delegate, email, password, currentPost, currentElementName, requestedPost, currentTumblelog;
+@synthesize delegate, email, password, currentPost, currentElementName, requestedPost, currentTumblelog, tumblelogs;
 
 - (id)initWithEmail:(NSString *)theEmail andPassword:(NSString *)thePassword
 {
@@ -154,18 +154,36 @@
     return dict;
 }
 
-- (NSArray *)tumblelogs
+- (BOOL) authenticate
 {
+    self.tumblelogs = [NSMutableArray array];
     NSString *theURLString = [NSString stringWithFormat:@"https://www.tumblr.com/api/authenticate?email=%@&password=%@",
                               [email stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                               [password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     NSURL *theURL = [NSURL URLWithString:theURLString];
-    NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:theURL];
+    NSMutableURLRequest *theURLRequest = [[[NSMutableURLRequest alloc] initWithURL:theURL] autorelease];
+    
+    NSError *error = nil;
+    NSHTTPURLResponse *theURLResponse = nil;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:theURLRequest
+                                                 returningResponse:&theURLResponse
+                                                             error:&error];
+
+    // Bail out quickly if NSURLConnection populated error.
+    if (error || [theURLResponse statusCode] == TKTumblrForbidden) {
+        if (delegate && [delegate respondsToSelector:@selector(tumblrDidAutheicateFailedWithError:)]) {
+            [delegate tumblrDidAutheicateFailedWithError:error];
+        }
+        return NO;
+    }
+
+    NSXMLParser *parser = [[NSXMLParser alloc] initWithData:responseData];
     [parser setDelegate:self];
     [parser parse];
     [parser release];
 
-    return nil;
+    [delegate tumblrDidAutheicateSuccess:self.tumblelogs];
+    return YES;
 }
 
 #pragma mark NSXMLParserDelegate
@@ -197,6 +215,7 @@
             if (delegate && [delegate respondsToSelector:@selector(tumblrDidReceiveTumblelog:)]) {
                 [delegate tumblrDidReceiveTumblelog:currentTumblelog];
             }
+            [self.tumblelogs addObject:currentTumblelog];
         }
         self.currentTumblelog = nil;
     }
