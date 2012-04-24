@@ -138,7 +138,7 @@ static NSString *TKPostFormatAsString[] =
         }
     }
 
-    return [(TKPost *)[postClass alloc] initWithAttributes:attributeDict];
+    return [[(TKPost *)[postClass alloc] initWithAttributes:attributeDict] autorelease];
 }
 
 - (NSString *)typeAsString
@@ -192,7 +192,7 @@ static NSString *TKPostFormatAsString[] =
 
 - (NSString *)body
 {
-    return [body copy];
+    return [[body copy] autorelease];
 }
 
 - (void)setBody:(NSString *)aBody

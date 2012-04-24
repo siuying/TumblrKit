@@ -29,7 +29,7 @@
 {
     NSString *format = @"--%@\r\nContent-Disposition: form-data; name=\"%@\"\r\n\r\n%@\r\n";
     NSMutableData *result = [NSMutableData data];
-    NSMutableDictionary *dict_ = [self mutableCopy];
+    NSMutableDictionary *dict_ = [[self mutableCopy] autorelease];
 
     // Hack: it seems the order we send the data in the HTTP post body matter
     // in the Tumblr API. We'll remove the "type" object from the dictionary

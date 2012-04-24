@@ -87,7 +87,7 @@
 
 - (NSURL *)URL;
 {
-    NSMutableDictionary *options = [_options mutableCopy];
+    NSMutableDictionary *options = [[_options mutableCopy] autorelease];
     NSString *domain = [options objectForKey:TKPostsRequestDomainKey];
     [options removeObjectForKey:TKPostsRequestDomainKey];
     NSMutableString *URLString = [NSMutableString stringWithFormat:@"http://%@/api/read?", domain];
