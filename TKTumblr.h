@@ -42,8 +42,8 @@ typedef enum
 - (void)tumblrDidFailToUploadPost:(TKPost *)thePost withDomain:(NSString *)theDomain returnCode:(TKTumblrResponseReturnCode)theReturnCode;
 - (void)tumblrDidReceiveTumblelog:(TKTumblelog *)theTumblelog;
 
-- (void)tumblrDidAutheicateSuccess:(NSArray*)tumblelogs;
-- (void)tumblrDidAutheicateFailedWithError:(NSError *)theDomain statusCode:(NSInteger)statusCode;
+- (void)tumblrDidAuthenticateSuccess:(NSArray*)tumblelogs;
+- (void)tumblrDidAuthenticateFailedWithError:(NSError *)theDomain statusCode:(NSInteger)statusCode;
 @end
 
 @interface TKTumblr : NSObject <NSXMLParserDelegate,TKTumblrDelegate>
