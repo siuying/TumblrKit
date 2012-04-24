@@ -170,7 +170,7 @@
                                                              error:&error];
 
     // Bail out quickly if NSURLConnection populated error.
-    if (error || [theURLResponse statusCode] >= 300) {
+    if (error || [theURLResponse statusCode] >= 400) {
         if (delegate && [delegate respondsToSelector:@selector(tumblrDidAutheicateFailedWithError:statusCode:)]) {
             [delegate tumblrDidAutheicateFailedWithError:error statusCode:[theURLResponse statusCode]];
         }
